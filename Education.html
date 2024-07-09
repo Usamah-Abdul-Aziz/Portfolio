@@ -6,12 +6,13 @@
     <title>Usamah Abdul Aziz - Mahasiswa Informatika</title>
     <link rel="stylesheet" href="styles4.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="container">
             <img src="Image/profile.JPG" alt="Usamah Abdul Aziz">
-            <h1> Usamah Abdul Aziz </h1>
+            <h1>Usamah Abdul Aziz</h1>
             <p>Mahasiswa Informatika</p>
             <nav>
                 <ul>
@@ -36,13 +37,13 @@
                         </div>
                         <h3>SDN 20 Kota Serang</h3>
                         <p>Sekolah Dasar saya di Sekolah Dasar Negeri Serang 20.</p>
-                        <a class="btn">2011-2027</a>
+                        <a class="btn">2011-2017</a>
                     </div>
                     <div class="education">
                         <div class="img-container">
                             <img src="Image/smp.jpeg" alt="Sekolah Menengah Pertama">
                         </div>
-                        <h3>SMP Islam Pariskian</h3> 
+                        <h3>SMP Islam Pariskian</h3>
                         <p>Sekolah Menengah Pertama saya di SMP Islam Pariskian.</p>
                         <a class="btn">2017-2020</a>
                     </div>
@@ -50,7 +51,7 @@
                         <div class="img-container">
                             <img src="Image/sma.jpeg" alt="Sekolah Menengah Atas">
                         </div>
-                        <h3>SMAN 1 Kota Serang</h3> 
+                        <h3>SMAN 1 Kota Serang</h3>
                         <p>Sekolah Menengah Atas saya di Sekolah Menengah Atas Negeri 1 Kota Serang.</p>
                         <a class="btn">2020-2023</a>
                     </div>
@@ -64,9 +65,33 @@
             <div class="socials">
                 <a href="https://www.instagram.com/aazizish?igsh=Z2h4MDR6dHkwNXhq"><img src="Image/instagram.png" alt="Instagram"></a>
                 <a href="https://x.com/AAzIsh_?t=_uKVsIjBkEcS0lGeNrsH3A&s=09"><img src="Image/twitter.png" alt="Twitter"></a>
-                <a href="https://www.linkedin.com/in/usamah-aziz-4b169a2a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><img src="Image/linkedin.png" alt="LinkedIn"></a>
+                <a href="https://www.linkedin.com/in/usamah-aziz-4b169a2a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><img src="Image/linkedin.png" alt="LinkedIn"></a>
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.querySelectorAll('.container, header, main, footer').forEach(element => {
+                    element.classList.add('loaded');
+                });
+            }, 500);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll(".container, header, main, footer");
+    
+            window.addEventListener("load", () => {
+                document.body.style.opacity = "1";
+                document.body.style.animation = "fadeInScaleUp 1.2s ease forwards";
+        
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add("loaded");
+                    }, index * 100); // Adjusted delay between elements
+                });
+            });
+        });
+    </script>
 </body>
 </html>

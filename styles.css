@@ -1,67 +1,50 @@
 body {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Orbitron', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #0d0d0d;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     color: #fff;
-    opacity: 0; /* Initial state for the fade-in effect */
-    animation: futuristEnter 1.5s ease-in-out forwards;
+    opacity: 0;
 }
 
-@keyframes futuristEnter {
+@keyframes fadeInScaleUp {
     0% {
         opacity: 0;
-        transform: scale(0.8);
-        filter: blur(5px);
+        transform: scale(0.95);
     }
     50% {
         opacity: 0.5;
         transform: scale(1.05);
-        filter: blur(2px);
     }
     100% {
         opacity: 1;
         transform: scale(1);
-        filter: blur(0);
     }
 }
 
-@keyframes neonGlows {
-    0%, 100% {
-        text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff;
-    }
-    50% {
-        text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff, 0 0 160px #00f5ff;
-    }
+.container, header, main, footer {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+.container.loaded, header.loaded, main.loaded, footer.loaded {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
+/* Header Styles */
 header {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     background-size: 400% 400%;
     animation: gradient 10s ease infinite;
     color: #00f5ff;
-    text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
     padding: 2rem 0;
     text-align: center;
+    text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
 }
 
 header img {
@@ -78,7 +61,6 @@ header img:hover {
     border: 3px solid #6a00ff;
     box-shadow: 0 0 20px #6a00ff, 0 0 40px #6a00ff, 0 0 60px #6a00ff;
 }
-
 
 header h1 {
     margin: 0.5rem 0;
@@ -99,7 +81,6 @@ nav ul {
 
 nav ul li {
     margin: 0 1rem;
-    color: #f3e600;
 }
 
 nav ul li a {
@@ -107,17 +88,18 @@ nav ul li a {
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
-    animation: neonGlows 1.5s infinite alternate;
 }
 
 nav ul li a:hover {
     color: #00b8ff;
 }
 
+/* Main Styles */
 main {
     padding: 2rem 0;
 }
 
+/* Footer Styles */
 footer {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     background-size: 400% 400%;
@@ -142,26 +124,28 @@ footer .socials a img:hover {
     transform: scale(1.2);
 }
 
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 @media (max-width: 768px) {
     header img {
         width: 120px;
         height: 120px;
     }
 
-    #hero h2 {
-        font-size: 2rem;
-    }
-
-    #hero p {
-        font-size: 1rem;
-    }
-
     .container {
         width: 95%;
     }
-}
 
-@media (max-width: 480px) {
     nav ul {
         flex-direction: column;
         align-items: center;
@@ -171,9 +155,40 @@ footer .socials a img:hover {
         margin: 0.5rem 0;
     }
 
+    #hero h2 {
+        font-size: 2rem;
+    }
+
+    #hero p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
     header img {
         width: 100px;
         height: 100px;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 0.5rem 0;
     }
 
     #hero h2 {
@@ -198,9 +213,12 @@ footer .socials a img:hover {
 }
 
 #hero h2 {
-    font-size: 2.5rem;
-    color: #00f5ff;
-    text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
+    overflow: hidden; /* Ensures the typewriter effect works properly */
+    border-right: .15em solid #00f5ff; /* Cursor */
+    white-space: nowrap; /* Keeps text in a single line */
+    margin: 0 auto; /* Center the element */
+    letter-spacing: .15em; /* Adds some space between letters */
+    animation: blink-caret .75s step-end infinite;
 }
 
 #hero p {
@@ -248,4 +266,9 @@ section {
     100% {
         text-shadow: -2px -2px 0px #ff00ff, 2px 2px 0px #00ffea;
     }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #00f5ff; }
 }

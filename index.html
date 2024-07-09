@@ -6,6 +6,7 @@
     <title>Usamah Abdul Aziz - Mahasiswa Informatika</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -28,7 +29,7 @@
     <main>
         <section id="hero">
             <div class="container">
-                <h2>Selamat Datang di Portfolio Saya!</h2>
+                <h2 id="welcome-message"></h2>
                 <p>Nama saya Aziz, selamat datang di portofolio saya semoga kalian bisa lebih mengenal saya!</p>
                 <p>Saya adalah seorang mahasiswa jurusan Informatika di Universitas Sultan Ageng Tirtayasa.</p>
                 <a href="https://wa.me/qr/MMEMJMPIIUEVP1" class="btn">Get in Touch</a>
@@ -45,5 +46,53 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const text = "Selamat Datang di Portfolio Saya!";
+            let index = 0;
+            const speed = 100;
+
+            function typeWriter() {
+                        if (index < text.length) {
+                            document.getElementById("welcome-message").innerHTML += text.charAt(index);
+                            index++;
+                            setTimeout(typeWriter, speed);
+                        }
+            }
+
+                 typeWriter();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+                const navLinks = document.querySelectorAll("nav ul li a");
+
+                navLinks.forEach(link => {
+                            link.addEventListener("mouseover", () => {
+                                link.classList.add("hovered");
+                            });
+                            link.addEventListener("mouseout", () => {
+                                link.classList.remove("hovered");
+                            });
+                });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+                const elements = document.querySelectorAll(".container, header, main, footer");
+
+                window.addEventListener("load", () => {
+                            document.body.style.opacity = "1";
+                            document.body.style.animation = "fadeInScaleUp 1.2s ease forwards";
+
+                            setTimeout(() => {
+                                elements.forEach((el, index) => {
+                                    setTimeout(() => {
+                                        el.classList.add("loaded");
+                                    }, index * 200); // Adding a slight delay between elements
+                                    });
+                            }, 300); // Starting the animation after the body fades in
+                });
+        });
+
+    </script>
 </body>
 </html>

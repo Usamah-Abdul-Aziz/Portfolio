@@ -6,12 +6,13 @@
     <title>Usamah Abdul Aziz - Mahasiswa Informatika</title>
     <link rel="stylesheet" href="styles3.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="container">
             <img src="Image/profile.JPG" alt="Usamah Abdul Aziz">
-            <h1> Usamah Abdul Aziz </h1>
+            <h1>Usamah Abdul Aziz</h1>
             <p>Mahasiswa Informatika</p>
             <nav>
                 <ul>
@@ -30,14 +31,14 @@
             <div class="container">
                 <h2>Projects</h2>
                 <div class="projects-grid">
-                    <div class="project">
+                    <div class="project" data-modal="modal1">
                         <img src="Image/Wasteless eats.jpg" alt="Project 1">
                         <div class="project-details">
-                            <h3>Wastless Eats</h3>
+                            <h3>Wasteless Eats</h3>
                             <p>Aplikasi untuk meminimalisir limbah makanan sekaligus membantu memberikan makanan bagi yang membutuhkan</p>
                         </div>
                     </div>
-                    <div class="project">
+                    <div class="project" data-modal="modal2">
                         <img src="Image/Task_manajemen.jpg" alt="Project 2">
                         <div class="project-details">
                             <h3>Task Manajemen</h3>
@@ -54,9 +55,119 @@
             <div class="socials">
                 <a href="https://www.instagram.com/aazizish?igsh=Z2h4MDR6dHkwNXhq"><img src="Image/instagram.png" alt="Instagram"></a>
                 <a href="https://x.com/AAzIsh_?t=_uKVsIjBkEcS0lGeNrsH3A&s=09"><img src="Image/twitter.png" alt="Twitter"></a>
-                <a href="https://www.linkedin.com/in/usamah-aziz-4b169a2a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><img src="Image/linkedin.png" alt="LinkedIn"></a>
+                <a href="https://www.linkedin.com/in/usamah-aziz-4b169a2a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><img src="Image/linkedin.png" alt="LinkedIn"></a>
             </div>
         </div>
     </footer>
+
+    <!-- Modal Popup -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Wastless Eats</h2>
+            <p>Aplikasi untuk meminimalisir limbah makanan sekaligus membantu memberikan makanan bagi yang membutuhkan</p>
+            <img src="Image/Wasteless eats.jpg" alt="Project 1">
+        </div>
+    </div>
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Task Manajemen</h2>
+            <p>Aplikasi berbasis django untuk memudahkan mengatur task</p>
+            <img src="Image/Task_manajemen.jpg" alt="Project 2">
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const projects = document.querySelectorAll('.project');
+            const modals = document.querySelectorAll('.modal');
+            const closeButtons = document.querySelectorAll('.close');
+            
+            projects.forEach(project => {
+                project.addEventListener('click', () => {
+                    const modalId = project.getAttribute('data-modal');
+                    const modal = document.getElementById(modalId);
+                    modal.style.display = "block";
+                });
+            });        
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.modal');
+                    modal.style.display = "none";
+                });
+            });            
+            window.addEventListener('click', (event) => {
+                modals.forEach(modal => {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                });
+            });
+        });
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        window.onclick = function(event) {
+            let modals = document.getElementsByClassName("modal");
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
+            }
+        }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll(".container, header, main, footer");
+    
+            window.addEventListener("load", () => {
+                document.body.style.opacity = "1";
+                document.body.style.animation = "fadeInScaleUp 1.2s ease forwards";
+        
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add("loaded");
+                    }, index * 100); // Adjusted delay between elements
+                });
+            });
+        });
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const projects = document.querySelectorAll('.project');
+            const modals = document.querySelectorAll('.modal');
+            const closeButtons = document.querySelectorAll('.close');
+
+            projects.forEach(project => {
+                        project.addEventListener('click', () => {
+                            const modalId = project.getAttribute('data-modal');
+                            const modal = document.getElementById(modalId);
+                            modal.style.display = "block";
+                        modal.classList.add("modal-open"); // Tambahkan kelas untuk animasi modal
+                        });
+            });
+
+                    closeButtons.forEach(button => {
+                                button.addEventListener('click', () => {
+                                    const modal = button.closest('.modal');
+                                    modal.style.display = "none";
+                        modal.classList.remove("modal-open"); // Hapus kelas saat modal ditutup
+                            });
+                    });
+
+                    window.addEventListener('click', (event) => {
+                                modals.forEach(modal => {
+                                    if (event.target == modal) {
+                                        modal.style.display = "none";
+                                        modal.classList.remove("modal-open"); // Hapus kelas saat modal ditutup
+                                    }
+                                });
+                    });
+        });
+
+    </script>
 </body>
 </html>

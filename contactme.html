@@ -6,6 +6,7 @@
     <title>Contact Me - Usamah Abdul Aziz</title>
     <link rel="stylesheet" href="styles5.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -30,9 +31,11 @@
             <div class="container">
                 <h2>Contact Me</h2>
                 <p>If you have any questions or would like to get in touch, please fill out the form below:</p>
-                <form action="#" method="POST">
+                <form action="https://formspree.io/f/mrbzgvda" method="POST">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
                     <label for="message">Message</label>
                     <textarea id="message" name="message" rows="6" required></textarea>
                     <button type="submit" class="btn">Send Message</button>
@@ -50,5 +53,21 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll(".container, header, main, footer");
+    
+            window.addEventListener("load", () => {
+                document.body.style.opacity = "1";
+                document.body.style.animation = "fadeInScaleUp 1.2s ease forwards";
+        
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add("loaded");
+                    }, index * 100); // Adjusted delay between elements
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,38 +1,29 @@
+/* Body Styles */
 body {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Orbitron', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #0d0d0d;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     color: #fff;
-    opacity: 0; /* Initial state for the fade-in effect */
-    animation: futuristEnter 1.5s ease-in-out forwards;
+    opacity: 0;
 }
 
-@keyframes futuristEnter {
+/* Keyframes */
+@keyframes fadeInScaleUp {
     0% {
         opacity: 0;
-        transform: scale(0.8);
-        filter: blur(5px);
+        transform: scale(0.95);
     }
     50% {
         opacity: 0.5;
         transform: scale(1.05);
-        filter: blur(2px);
     }
     100% {
         opacity: 1;
         transform: scale(1);
-        filter: blur(0);
-    }
-}
-
-@keyframes neonGlows {
-    0%, 100% {
-        text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff;
-    }
-    50% {
-        text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff, 0 0 160px #00f5ff;
     }
 }
 
@@ -48,20 +39,45 @@ body {
     }
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+@keyframes neonGlows {
+    0%, 100% {
+        text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff;
+    }
+    50% {
+        text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff, 0 0 160px #00f5ff;
+    }
 }
 
+@keyframes borderPulsate {
+    0%, 100% {
+        border-color: #00f5ff;
+    }
+    50% {
+        border-color: #6a00ff;
+    }
+}
+
+/* Container, Header, Main, Footer */
+.container, header, main, footer {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.container.loaded, header.loaded, main.loaded, footer.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Header Styles */
 header {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     background-size: 400% 400%;
     animation: gradient 10s ease infinite;
     color: #00f5ff;
-    text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
     padding: 2rem 0;
     text-align: center;
+    text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
 }
 
 header img {
@@ -78,7 +94,6 @@ header img:hover {
     border: 3px solid #6a00ff;
     box-shadow: 0 0 20px #6a00ff, 0 0 40px #6a00ff, 0 0 60px #6a00ff;
 }
-
 
 header h1 {
     margin: 0.5rem 0;
@@ -99,7 +114,6 @@ nav ul {
 
 nav ul li {
     margin: 0 1rem;
-    color: #f3e600;
 }
 
 nav ul li a {
@@ -107,17 +121,18 @@ nav ul li a {
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
-    animation: neonGlows 1.5s infinite alternate;
 }
 
 nav ul li a:hover {
     color: #00b8ff;
 }
 
+/* Main Styles */
 main {
     padding: 2rem 0;
 }
 
+/* Contact Section */
 #contact {
     text-align: center;
     padding: 2rem 0;
@@ -170,6 +185,8 @@ form input, form textarea {
 form input:focus, form textarea:focus {
     outline: none;
     background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea;
+    border: 2px solid #00ffea;
 }
 
 form .btn {
@@ -181,32 +198,41 @@ form .btn {
     border-radius: 5px;
     text-decoration: none;
     font-weight: 600;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 form .btn:hover {
     background-color: #00ffea;
-    color: #000000;
+    color: #000;
+    box-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea;
 }
 
-@keyframes borderPulsate {
-    0%, 100% {
-        border-color: #00f5ff;
-    }
-    50% {
-        border-color: #6a00ff;
-    }
+/* Footer Styles */
+footer {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+    color: #f3e600;
+    padding: 1rem 0;
+    text-align: center;
 }
 
-@keyframes neonGlows {
-    0%, 100% {
-        text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff;
-    }
-    50% {
-        text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 80px #00f5ff, 0 0 160px #00f5ff;
-    }
+footer p {
+    margin: 0;
 }
 
+footer .socials a img {
+    width: 30px;
+    height: 30px;
+    margin: 0 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+footer .socials a img:hover {
+    transform: scale(1.2);
+}
+
+/* Responsiveness */
 @media (max-width: 768px) {
     header img {
         width: 120px;
@@ -255,6 +281,15 @@ form .btn:hover {
 
     header p {
         font-size: 1rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 0.5rem 0;
     }
 
     form {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me - Usamah Abdul Aziz</title>
     <link rel="stylesheet" href="styles2.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -28,7 +28,7 @@
     <main>
         <section id="about">
             <div class="container">
-                <h2>About Me</h2>
+                <h2 id= "aboutme"></h2>
                 <p>Halo semua perkenalkan saya Usamah Abdul Aziz, saya adalah mahasiswa jurusan Informatika Universitas Sultan Ageng Tirtayasa. Saya ingin menjadi data analyst. karena itu saya semangat dalam belajar segala hal tentang data dan teknologi untuk terus meningkatkan kemampuan saya</p>
                 <section id="skills">
                     <div class="container">
@@ -37,18 +37,22 @@
                             <div class="skill">
                                 <h4>Programming Languages</h4>
                                 <div class="skill-detail">Python & C++</div>
+                                <div class="skill-progress-bar"></div>
                             </div>
                             <div class="skill">
                                 <h4>Web Development</h4>
                                 <div class="skill-detail">HTML & CSS</div>
+                                <div class="skill-progress-bar"></div>
                             </div>
                             <div class="skill">
                                 <h4>Data Analysis</h4>
                                 <div class="skill-detail">Python & SQL</div>
+                                <div class="skill-progress-bar"></div>
                             </div>
                             <div class="skill">
                                 <h4>UI/UX</h4>
                                 <div class="skill-detail">Design & User Experience</div>
+                                <div class="skill-progress-bar"></div>
                             </div>
                         </div>
                     </div>
@@ -123,5 +127,96 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const text = "Tentang Usamah Abdul Aziz...";
+            let index = 0;
+            const speed = 100;
+
+            function typeWriter() {
+                        if (index < text.length) {
+                            document.getElementById("aboutme").innerHTML += text.charAt(index);
+                            index++;
+                            setTimeout(typeWriter, speed);
+                        }
+            }
+
+                 typeWriter();
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.querySelectorAll('.container, header, main, footer').forEach(element => {
+                    element.classList.add('loaded');
+                });
+            }, 500);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll(".container, header, main, footer");
+    
+            window.addEventListener("load", () => {
+                document.body.style.opacity = "1";
+                document.body.style.animation = "fadeInScaleUp 1.2s ease forwards";
+        
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add("loaded");
+                    }, index * 100); // Adjusted delay between elements
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+                const skillElements = document.querySelectorAll(".skill");
+                skillElements.forEach((skill) => {
+                    skill.addEventListener("mouseover", () => {
+                                    const progressBar = skill.querySelector(".skill-progress-bar");
+                                    progressBar.style.width = "100%";
+                    });
+
+                    skill.addEventListener("mouseout", () => {
+                                    const progressBar = skill.querySelector(".skill-progress-bar");
+                                    progressBar.style.width = "0";
+                    });
+                });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+                const skillCards = document.querySelectorAll(".skill-card");
+
+                skillCards.forEach((card) => {
+                            card.addEventListener("mouseover", () => {
+                                card.classList.add("hovered");
+                            });
+
+                            card.addEventListener("mouseout", () => {
+                                            card.classList.remove("hovered");
+                            });
+                });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+             const languageCards = document.querySelectorAll(".language");
+
+             const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.style.opacity = 1;
+                            }
+                        });
+                    }, { threshold: 0.1 });
+
+                    languageCards.forEach((card) => {
+                                observer.observe(card);
+                                card.addEventListener("mouseover", () => {
+                                    card.classList.add("hovered");
+                                });
+                                card.addEventListener("mouseout", () => {
+                                    card.classList.remove("hovered");
+                                });
+                    });
+        });
+    </script>
 </body>
 </html>

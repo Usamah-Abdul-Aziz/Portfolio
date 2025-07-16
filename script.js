@@ -8,6 +8,14 @@ if (localStorage.getItem('theme') === 'light') {
   themeToggle.textContent = '🌞';
 }
 
+// Preferensi sistem untuk tema awal
+if (!localStorage.getItem('theme')) {
+  if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+    html.setAttribute('data-theme', 'light');
+    themeToggle.textContent = '🌞';
+  }
+}
+
 themeToggle.addEventListener('click', () => {
   if (html.getAttribute('data-theme') === 'light') {
     html.removeAttribute('data-theme');
@@ -84,6 +92,14 @@ if (typedText) {
   type();
 }
 
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    const offset = window.scrollY * 0.3;
+    hero.style.backgroundPosition = `center ${offset}px`;
+  }
+});
+
 // Back to top button
 const backToTop = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
@@ -96,5 +112,41 @@ window.addEventListener('scroll', () => {
 if (backToTop) {
   backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Progress bar scroll
+window.addEventListener('scroll', () => {
+  const scrollProgress = document.getElementById('scrollProgress');
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (scrollTop / docHeight) * 100;
+  if (scrollProgress) scrollProgress.style.width = scrolled + "%";
+});
+
+// Form kontak validasi & notifikasi
+// filepath: c:\Users\ikmal\Downloads\Portofolio\script.js
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    const status = document.getElementById('formStatus');
+    status.textContent = "Sending...";
+    status.style.color = "var(--accent)";
+    // Biarkan form submit ke Formspree, status akan direset otomatis
+  
+    if (!name || !email || !message) {
+      status.textContent = "Please fill all fields.";
+      status.style.color = "red";
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      status.textContent = "Please enter a valid email.";
+      status.style.color = "red";
+      return;
+    }
+    status.textContent = "Message sent! (Demo only)";
+    status.style.color = "green";
+    contactForm.reset();
+    setTimeout(() => { status.textContent = ""; }, 3000);
   });
 }

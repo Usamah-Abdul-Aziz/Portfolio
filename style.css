@@ -124,7 +124,11 @@ nav {
   flex-direction: column;
   align-items: center;
   padding: 3rem 1rem 2rem 1rem;
-  background: linear-gradient(120deg, var(--card) 60%, transparent 100%);
+  background: linear-gradient(120deg, var(--card) 60%, transparent 100%), 
+    url('abstract-tech-city-skyline.png') center/cover no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  overflow: hidden;
   border-radius: 0 0 var(--radius) var(--radius);
   box-shadow: var(--shadow);
 }
@@ -170,6 +174,10 @@ nav {
 .cta-btn:hover {
   background: var(--accent2);
   transform: translateY(-2px) scale(1.05);
+}
+.cta-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 4px var(--accent2);
 }
 
 main {
@@ -264,6 +272,10 @@ h2 {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 8px 32px rgba(0,188,212,0.13);
 }
+.project-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 12px var(--accent2);
+}
 
 .skills {
   display: flex;
@@ -306,6 +318,32 @@ footer {
   background: none;
 }
 
+\Portofolio\style.css
+#contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+#contactForm input,
+#contactForm textarea {
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  font-size: 1rem;
+  background: var(--card);
+  color: var(--text);
+  resize: vertical;
+}
+#contactForm textarea {
+  min-height: 80px;
+}
+#formStatus {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--accent2);
+}
+
 /* Fade-in animasi */
 .fade-in {
   opacity: 0;
@@ -338,6 +376,18 @@ footer {
 #backToTop:hover {
   background: var(--accent2);
   transform: scale(1.1);
+}
+
+/* Scroll Progress Bar */
+#scrollProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: var(--accent2);
+  z-index: 999;
+  transition: width 0.2s;
 }
 
 /* Responsive */

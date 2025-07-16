@@ -16,6 +16,7 @@
   <meta property="og:type" content="website" />
 </head>
 <body>
+  <div id="scrollProgress"></div>
   <nav>
       <a href="#" class="logo" aria-label="Beranda">Aziz<span>.</span></a>
       <div class="controls">
@@ -41,7 +42,7 @@
     <section id="about" class="fade-in">
       <h2>About Me</h2>
       <div class="about-content">
-        <img src="Aziz.png" alt="Avatar Usamah" class="avatar" />
+        <img src="Aziz.png" alt="Avatar Usamah" class="avatar" loading="lazy" />
         <div>
           <p>
             I am an active Informatics Engineering student with a strong interest in Machine Learning and Data Engineering. 
@@ -75,7 +76,7 @@
         <div class="project-card">
           <h3>WastelessEats App</h3>
           <p>An app called WastelessEats app to reduce food waste.</p>
-          <a href="https://github.com/Usamah-Abdul-Aziz/Si-Babeh" target="_blank" rel="noopener">Lihat Projek</a>
+          <a href="https://github.com/Rajarevanery/Wastelesseats" target="_blank" rel="noopener">Lihat Projek</a>
         </div>
       </div>
     </section>
@@ -124,6 +125,13 @@
 
     <section id="contact" class="fade-in">
       <h2>Contact</h2>
+      <form id="contactForm" action="https://formspree.io/f/xkgznzrg" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="cta-btn">Send Message</button>
+        <div id="formStatus"></div>
+      </form>
       <p>Email: <a href="mailto:usamah@email.com">ikmal.usamah@gmail.com</a></p>
       <p>
         <a href="https://github.com/Usamah-Abdul-Aziz" target="_blank" rel="noopener">GitHub</a> |

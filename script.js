@@ -132,21 +132,5 @@ if (contactForm) {
     const status = document.getElementById('formStatus');
     status.textContent = "Sending...";
     status.style.color = "var(--accent)";
-    // Biarkan form submit ke Formspree, status akan direset otomatis
-  
-    if (!name || !email || !message) {
-      status.textContent = "Please fill all fields.";
-      status.style.color = "red";
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      status.textContent = "Please enter a valid email.";
-      status.style.color = "red";
-      return;
-    }
-    status.textContent = "Message sent! (Demo only)";
-    status.style.color = "green";
-    contactForm.reset();
-    setTimeout(() => { status.textContent = ""; }, 3000);
   });
 }

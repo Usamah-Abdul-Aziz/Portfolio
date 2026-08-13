@@ -20,6 +20,7 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [skipCloseAnim, setSkipCloseAnim] = useState(false);
   const { openPalette, openContact } = useFilter();
 
   useEffect(() => {
@@ -40,6 +41,28 @@ export default function Nav() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // Closing the mobile menu normally plays a ~0.2s height/opacity exit
+  // animation. If a scrollIntoView() is kicked off in that same instant,
+  // the two animations race and the scroll silently gets cancelled —
+  // this is what broke section links from the mobile menu. Section
+  // links close the menu *instantly* (no exit animation) instead, so
+  // there's nothing to race. The Search/Contact buttons don't scroll
+  // immediately (they open a modal), so they keep the normal animated
+  // close.
+  const scrollToSection = (href) => (e) => {
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    // Two separate renders on purpose: AnimatePresence captures the exit
+    // transition from the element's last render *before* it's removed.
+    // Flipping both flags in the same batch would remove the menu using
+    // the still-animated (0.22s) transition, which is exactly what races
+    // the scroll and cancels it. Committing skipCloseAnim first lets the
+    // menu re-render with the instant transition while still present;
+    // only then does menuOpen flip to false.
+    setSkipCloseAnim(true);
+    requestAnimationFrame(() => setMenuOpen(false));
+  };
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
@@ -51,7 +74,7 @@ export default function Nav() {
       <nav className="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
         <a
           href="#top"
-          onClick={closeMenu}
+          onClick={scrollToSection("#top")}
           className="font-mono text-xs tracking-widest uppercase text-ink-soft hover:text-pine transition-colors"
         >
           Usamah A.A.
@@ -61,6 +84,7 @@ export default function Nav() {
             <li key={l.href}>
               <a
                 href={l.href}
+                onClick={scrollToSection(l.href)}
                 className="font-mono text-xs tracking-wide uppercase text-ink-soft hover:text-pine transition-colors"
               >
                 {l.label}
@@ -97,7 +121,10 @@ export default function Nav() {
           </button>
           <button
             type="button"
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => {
+              setSkipCloseAnim(false);
+              setMenuOpen((o) => !o);
+            }}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             className="sm:hidden inline-flex items-center justify-center w-9 h-9 -mr-1.5 text-ink-soft hover:text-pine transition-colors"
@@ -113,7 +140,7 @@ export default function Nav() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            transition={{ duration: skipCloseAnim ? 0 : 0.22, ease: "easeOut" }}
             className="sm:hidden overflow-hidden border-t border-line/60 bg-paper"
           >
             <ul className="px-6 py-4 space-y-1">
@@ -121,7 +148,7 @@ export default function Nav() {
                 <li key={l.href}>
                   <a
                     href={l.href}
-                    onClick={closeMenu}
+                    onClick={scrollToSection(l.href)}
                     className="block py-2.5 font-mono text-sm uppercase tracking-wide text-ink-soft hover:text-pine transition-colors"
                   >
                     {l.label}

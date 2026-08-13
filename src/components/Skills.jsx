@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 import { skillGroups, certifications, projects } from "@/lib/data";
 import { skillMatchesTag, cn } from "@/lib/utils";
 import { useFilter } from "./FilterContext";
@@ -8,6 +9,13 @@ import { useFilter } from "./FilterContext";
 function isFilterable(item) {
   return projects.some((p) => p.tags.some((t) => skillMatchesTag(item, t)));
 }
+
+const ISSUER_BADGE = {
+  AWS: "text-amber border-amber/40 bg-amber/10",
+  Cisco: "text-[#3E7CA6] border-[#3E7CA6]/35 bg-[#3E7CA6]/10",
+  "Digital Talent Scholarship": "text-pine border-pine/35 bg-pine/10",
+  "EF SET": "text-ink-soft border-ink-soft/30 bg-ink-soft/10",
+};
 
 export default function Skills() {
   const { activeSkill, toggleSkill } = useFilter();
@@ -80,14 +88,45 @@ export default function Skills() {
             transition={{ duration: 0.5 }}
             className="space-y-3"
           >
-            {certifications.map((c) => (
-              <li
-                key={c}
-                className="text-ink-soft leading-relaxed border-b border-line/50 pb-3"
-              >
-                {c}
-              </li>
-            ))}
+            {certifications.map((c) => {
+              const badgeClass =
+                ISSUER_BADGE[c.issuer] || "text-ink-soft border-ink-soft/30 bg-ink-soft/10";
+              const inner = (
+                <>
+                  <span
+                    className={cn(
+                      "shrink-0 font-mono text-[10px] tracking-wide uppercase border rounded-full px-2 py-0.5",
+                      badgeClass
+                    )}
+                  >
+                    {c.issuer}
+                  </span>
+                  <span className="flex-1">{c.name}</span>
+                  {c.url && (
+                    <ExternalLink className="w-3.5 h-3.5 text-ink-soft/40 group-hover:text-pine transition-colors shrink-0" />
+                  )}
+                </>
+              );
+
+              return (
+                <li key={c.name} className="border-b border-line/50 pb-3">
+                  {c.url ? (
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-3 text-ink-soft hover:text-pine transition-colors leading-relaxed"
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div className="flex items-center gap-3 text-ink-soft leading-relaxed">
+                      {inner}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </motion.ul>
         </div>
       </div>

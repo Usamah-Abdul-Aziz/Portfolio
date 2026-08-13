@@ -9,22 +9,20 @@ import { sampleCatmullRom, samplesToPath } from "@/lib/curve";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The thread that runs the page — desktop only (no safe margin for it on
- * mobile, where the Hero keeps its own standalone wave instead, see
- * Hero.jsx + Spine.jsx).
+ * The thread that runs the page — xl screens only (1280px+). It needs a
+ * genuinely empty margin to sit in once it's thin, and content is
+ * max-w-5xl (1024px): at the lg breakpoint (1024px) that margin can be
+ * ~0px, which is exactly what caused it to drift over body text. xl+
+ * guarantees a real margin.
  *
- * This is ONE path, not two. Near the top it swings wide across the Hero
- * content column (taking over the role the old standalone Hero wave used
- * to play); past a smooth transition zone tied to the Hero section's own
- * measured height, it settles into a slim line hugging the left gutter
- * for the rest of the page, down to where the Contact section begins.
- *
- * Coordinates are built directly in real pixels with a 1:1 viewBox (no
- * non-uniform scaling, no vector-effect trick) — an earlier version used
- * an abstract 0-100 unit system stretched ~12x horizontally, which made
- * the browser's dash-pattern (stroke-dasharray/offset, used for the
- * scroll-driven reveal) render incorrectly at some points along the path.
- * Plain 1:1 pixel coordinates sidestep that entirely.
+ * One path, not two. Near the top it swings wide across the Hero content
+ * column (taking over the role the old standalone Hero wave used to
+ * play); past a transition zone tied to Hero's own measured height, it
+ * settles into a slim line at a fixed pixel offset from the true left
+ * edge of the viewport — not a fraction of the content width, so it
+ * can't drift back into text regardless of how wide the margin actually
+ * is. Only the wide Hero portion scales with content width; the thin
+ * portion is deliberately absolute and small.
  */
 
 function heroTexture(fh) {
@@ -34,12 +32,10 @@ function heroTexture(fh) {
   );
 }
 
+// One slow, gentle wave — deliberately calmer than earlier versions,
+// which layered three frequencies and read as jittery over a tall page.
 function thinTexture(y) {
-  return (
-    0.55 * Math.sin((y / 340) * Math.PI * 2 + 0.8) +
-    0.28 * Math.sin((y / 130) * Math.PI * 2 + 2.4) +
-    0.17 * Math.sin((y / 61) * Math.PI * 2 + 4.1)
-  );
+  return Math.sin((y / 520) * Math.PI * 2 + 0.6);
 }
 
 function smoothstep(t) {
@@ -47,54 +43,45 @@ function smoothstep(t) {
   return c * c * (3 - 2 * c);
 }
 
-/**
- * Thin -> wide bump -> thin. The "wide" window is deliberately placed
- * around Hero's own bottom padding and the very top of the About section
- * (past the headline/paragraph text), not across the whole Hero height —
- * so the lively wave moment sits in genuinely empty space rather than
- * behind body copy. base/amp are fractions of container width (0-1).
- */
-function envelope(y, heroEndY) {
-  const THIN = { base: 0.08, amp: 0.03 };
-  const WIDE = { base: 0.5, amp: 0.22 };
+const THIN_BASE_PX = 40; // fixed px from the container's left edge
+const THIN_AMP_PX = 10;
+const WIDE_BASE_FRAC = 0.5; // fraction of content width
+const WIDE_AMP_FRAC = 0.22;
 
-  const bumpStart = heroEndY * 0.88;
-  const bumpInEnd = heroEndY * 1.02;
-  const bumpOutStart = heroEndY * 1.35;
-  const bumpEnd = heroEndY * 1.65;
+function envelope(y, heroEndY, safeEndY) {
+  // Widen shortly before Hero ends, peak exactly at the Hero/About seam,
+  // and be fully back to thin by safeEndY (measured against where About's
+  // actual body text starts, with a margin — not a guessed multiplier).
+  // The two earlier versions of this both assumed more empty space below
+  // Hero than actually exists (~97px in practice), so the tail of the
+  // transition kept landing on the About paragraph.
+  const span = Math.max(60, safeEndY - heroEndY);
+  const bumpStart = heroEndY - span * 0.9;
+  const bumpInEnd = heroEndY;
+  const bumpOutStart = heroEndY + span * 0.15;
+  const bumpEnd = safeEndY;
 
-  if (y <= bumpStart || y >= bumpEnd) {
-    return { base: THIN.base, amp: THIN.amp, wideness: 0 };
-  }
-  if (y >= bumpInEnd && y <= bumpOutStart) {
-    return { base: WIDE.base, amp: WIDE.amp, wideness: 1 };
-  }
+  if (y <= bumpStart || y >= bumpEnd) return { wideness: 0 };
+  if (y >= bumpInEnd && y <= bumpOutStart) return { wideness: 1 };
   if (y < bumpInEnd) {
-    const t = smoothstep((y - bumpStart) / (bumpInEnd - bumpStart));
-    return {
-      base: THIN.base + (WIDE.base - THIN.base) * t,
-      amp: THIN.amp + (WIDE.amp - THIN.amp) * t,
-      wideness: t,
-    };
+    return { wideness: smoothstep((y - bumpStart) / (bumpInEnd - bumpStart)) };
   }
-  const t = smoothstep((y - bumpOutStart) / (bumpEnd - bumpOutStart));
-  return {
-    base: WIDE.base + (THIN.base - WIDE.base) * t,
-    amp: WIDE.amp + (THIN.amp - WIDE.amp) * t,
-    wideness: 1 - t,
-  };
+  return { wideness: 1 - smoothstep((y - bumpOutStart) / (bumpEnd - bumpOutStart)) };
 }
 
-function buildPoints({ totalHeight, heroEndY, width }, sampleCount = 220) {
+function buildPoints({ totalHeight, heroEndY, safeEndY, width }, sampleCount = 220) {
   const points = [];
   for (let i = 0; i <= sampleCount; i++) {
     const f = i / sampleCount;
     const y = f * totalHeight;
 
-    const { base, amp, wideness } = envelope(y, heroEndY);
-    const fh = Math.min(1, y / (heroEndY * 1.65));
-    const tex = heroTexture(fh) * wideness + thinTexture(y) * (1 - wideness);
-    points.push({ x: (base + amp * tex) * width, y });
+    const { wideness } = envelope(y, heroEndY, safeEndY);
+    const fh = Math.min(1, y / heroEndY);
+
+    const thinX = THIN_BASE_PX + THIN_AMP_PX * thinTexture(y);
+    const wideX = (WIDE_BASE_FRAC + WIDE_AMP_FRAC * heroTexture(fh)) * width;
+
+    points.push({ x: thinX + (wideX - thinX) * wideness, y });
   }
   return points;
 }
@@ -109,18 +96,32 @@ export default function Thread() {
     const measure = () => {
       const contact = document.getElementById("contact");
       const hero = document.getElementById("top");
+      const about = document.getElementById("about");
       if (!contact || !hero) return;
       const contactTop = contact.getBoundingClientRect().top + window.scrollY;
       const heroRect = hero.getBoundingClientRect();
       const heroHeight = heroRect.height;
-      const left = Math.min(32, heroRect.left);
+
+      // Where About's actual body copy starts — the bump must fully
+      // resolve back to thin before this, with a margin. Falls back to a
+      // fixed offset past Hero if for some reason the paragraph isn't
+      // found, so this never throws.
+      const aboutPara = about?.querySelector("p");
+      const safeEndY = aboutPara
+        ? aboutPara.getBoundingClientRect().top + window.scrollY - 24
+        : heroHeight + 120;
+
+      // Fixed, small, always-safe left offset — xl+ guarantees enough
+      // margin for this regardless of exact viewport width.
+      const left = 40;
       const width = heroRect.right - left;
 
       const next = {
         contactTop: Math.round(contactTop),
         heroEndY: Math.round(heroHeight),
+        safeEndY: Math.round(safeEndY),
         left,
-        width,
+        width: Math.round(width),
       };
 
       const prev = lastGeom.current;
@@ -128,7 +129,7 @@ export default function Thread() {
         !prev ||
         Math.abs(prev.contactTop - next.contactTop) > 2 ||
         Math.abs(prev.heroEndY - next.heroEndY) > 2 ||
-        Math.abs(prev.left - next.left) > 2 ||
+        Math.abs(prev.safeEndY - next.safeEndY) > 2 ||
         Math.abs(prev.width - next.width) > 2;
 
       if (changed) {
@@ -160,6 +161,7 @@ export default function Thread() {
           buildPoints({
             totalHeight: geom.contactTop,
             heroEndY: geom.heroEndY,
+            safeEndY: geom.safeEndY,
             width: geom.width,
           }),
           3
@@ -210,7 +212,7 @@ export default function Thread() {
   return (
     <div
       ref={containerRef}
-      className="hidden lg:block absolute top-0 pointer-events-none"
+      className="hidden xl:block absolute top-0 pointer-events-none"
       style={{ left: geom.left, width: geom.width, height: geom.contactTop }}
       aria-hidden="true"
     >
@@ -218,14 +220,14 @@ export default function Thread() {
         width={geom.width}
         height={geom.contactTop}
         viewBox={`0 0 ${geom.width} ${geom.contactTop}`}
-        className="opacity-[0.65]"
+        className="opacity-[0.55]"
       >
         <path
           ref={pathRef}
           d={pathD}
           fill="none"
           stroke="var(--color-pine)"
-          strokeWidth="1.8"
+          strokeWidth="1.6"
           strokeLinecap="round"
         />
       </svg>

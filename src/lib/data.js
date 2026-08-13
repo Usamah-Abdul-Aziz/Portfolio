@@ -126,10 +126,10 @@ export const skillGroups = [
 // null for certs without a public verification page. Nothing else needs
 // to change; Skills.jsx picks this up automatically.
 export const certifications = [
-  { name: "Introduction to Data Science", issuer: "Cisco", url: null },
+  { name: "Introduction to Data Science", issuer: "Cisco", url: "https://www.credly.com/badges/e353a357-ed45-41f7-a55f-5dd9787d9613/linked_in_profile" },
   { name: "Cloud Computing", issuer: "Digital Talent Scholarship", url: null },
-  { name: "AWS Academy Cloud Architecture", issuer: "AWS", url: null },
-  { name: "AWS Academy Cloud Foundations", issuer: "AWS", url: null },
-  { name: "AWS Knowledge: Cloud Essentials", issuer: "AWS", url: null },
-  { name: "EF SET English Certificate 77/100 (C2 Proficient)", issuer: "EF SET", url: null },
+  { name: "AWS Academy Cloud Architecture", issuer: "AWS", url: "https://www.credly.com/badges/b96fb2fc-c09e-4619-997e-38a83c0ffd81/linked_in_profile" },
+  { name: "AWS Academy Cloud Foundations", issuer: "AWS", url: "https://www.credly.com/badges/d4afcb4d-52da-4ad9-8549-6b5ceb671a8c/linked_in_profile" },
+  { name: "AWS Knowledge: Cloud Essentials", issuer: "AWS", url: "https://www.credly.com/badges/586684fa-5202-4ffe-93a1-0b6e04a6791e/linked_in_profile" },
+  { name: "EF SET English Certificate 77/100 (C2 Proficient)", issuer: "EF SET", url: "https://cert.efset.org/en/jUzNTH" },
 ];

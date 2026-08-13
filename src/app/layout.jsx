@@ -11,7 +11,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Thread from "@/components/Thread";
 
-const siteUrl = "https://portfolio-three-murex-15.vercel.app";
+const siteUrl = "https://usamah.is-a.dev/";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),

@@ -45,6 +45,16 @@ export const organizationalExperience = [
 ];
 
 export const projects = [
+   {
+    title: "NusaFlow",
+    period: "Flagship Project",
+    description:
+     "A supply chain control tower that enables users to monitor inventory, shipments, and operational risks. It provides demand forecasting, replenishment recommendations, and supply scenario simulations to help users anticipate potential disruptions and make data-driven supply chain decisions.",
+    tags: ["Next.js", "FastAPI", "Python", "Machine Learning", "PostgreSQL", "Data Visualization", "Supply Chain Management", "Data Analysis"],
+    image: "/projects/nusaflow.jpg",
+    github: "https://github.com/Usamah-Abdul-Aziz/NusaFlow",
+    demo: "https://nusa-flow.vercel.app",
+  },
   {
     title: "Project Management System",
     period: "Internship, KIT",
@@ -105,7 +115,6 @@ export const projects = [
     github: "https://github.com/Usamah-Abdul-Aziz/Si-Babeh",
     demo: "",
   },
-
   {
     title: "I-MBG",
     period: "Academic Project",
